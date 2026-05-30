@@ -1,0 +1,19 @@
+{
+  "_defaults": {
+    "default_mode": "selection",
+    "auto_category": true
+  },
+  "forge_demo": {
+    "description": "A simple forge conversation scene used to test selective dialogue.",
+    "allowed_categories": [
+      "greeting",
+      "appreciation",
+      "critique",
+      "politics"
+    ],
+    "category_biases": {
+      "greeting": 0.15,
+      "appreciation": 0.05
+    }
+  }
+}

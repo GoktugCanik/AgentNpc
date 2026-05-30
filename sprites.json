@@ -1,0 +1,30 @@
+{
+  "_defaults": {
+    "templates": [
+      "{image_tag} {mood}",
+      "{image_tag}_{mood}",
+      "{image_tag}"
+    ],
+    "fallback_moods": [
+      "neutral",
+      "happy",
+      "angry"
+    ]
+  },
+  "Kaldar": {
+    "image_tag": "elder",
+    "moods": {
+      "neutral": "elder man",
+      "happy": "elder happy",
+      "angry": "elder angry"
+    }
+  },
+  "Boy": {
+    "image_tag": "boy",
+    "moods": {
+      "neutral": "boy idle",
+      "happy": "boy happy",
+      "angry": "boy angry"
+    }
+  }
+}

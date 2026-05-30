@@ -1,0 +1,197 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agentnpc.local/schemas/personalities.schema.json",
+  "title": "AgentNpc Personalities Schema",
+  "description": "Defines NPC identity, social rules, emotional triggers, and trust logic for the AgentNpc package.",
+  "type": "object",
+  "minProperties": 1,
+  "propertyNames": {
+    "type": "string",
+    "minLength": 1
+  },
+  "additionalProperties": {
+    "$ref": "#/$defs/npcDefinition"
+  },
+  "$defs": {
+    "sentimentLabel": {
+      "type": "string",
+      "enum": [
+        "love",
+        "like",
+        "neutral",
+        "dislike",
+        "hate"
+      ]
+    },
+    "sentimentTriggers": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "love",
+        "like",
+        "neutral",
+        "dislike",
+        "hate"
+      ],
+      "properties": {
+        "love": {
+          "type": "string",
+          "minLength": 1
+        },
+        "like": {
+          "type": "string",
+          "minLength": 1
+        },
+        "neutral": {
+          "type": "string",
+          "minLength": 1
+        },
+        "dislike": {
+          "type": "string",
+          "minLength": 1
+        },
+        "hate": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "trustLogic": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "love",
+        "like",
+        "neutral",
+        "dislike",
+        "hate"
+      ],
+      "properties": {
+        "love": {
+          "type": "integer",
+          "minimum": -100,
+          "maximum": 100
+        },
+        "like": {
+          "type": "integer",
+          "minimum": -100,
+          "maximum": 100
+        },
+        "neutral": {
+          "type": "integer",
+          "minimum": -100,
+          "maximum": 100
+        },
+        "dislike": {
+          "type": "integer",
+          "minimum": -100,
+          "maximum": 100
+        },
+        "hate": {
+          "type": "integer",
+          "minimum": -100,
+          "maximum": 100
+        }
+      }
+    },
+    "npcDefinition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "hometown",
+        "voice",
+        "backstory",
+        "social_rules",
+        "triggers",
+        "trust_logic"
+      ],
+      "properties": {
+        "display_name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Optional player-facing name. If omitted, the top-level NPC key is used."
+        },
+        "role": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Optional high-level descriptor such as blacksmith, noble, or child."
+        },
+        "hometown": {
+          "type": "string",
+          "minLength": 1
+        },
+        "voice": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Short tone guide used to keep authored categories and AI prompts aligned."
+        },
+        "backstory": {
+          "type": "string",
+          "minLength": 1
+        },
+        "social_rules": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": "Author-written behavior rules that constrain how the NPC should react."
+        },
+        "triggers": {
+          "$ref": "#/$defs/sentimentTriggers"
+        },
+        "trust_logic": {
+          "$ref": "#/$defs/trustLogic"
+        },
+        "default_mood": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Optional default runtime mood used by the state layer."
+        },
+        "tags": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": "Optional content tags for tools, filtering, or future editor support."
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "Kaldar": {
+        "hometown": "Kvatch",
+        "voice": "Grumpy blacksmith, uses metal and forge metaphors.",
+        "backstory": "A former soldier turned smith who values steel quality above politeness.",
+        "social_rules": [
+          "Stay gruff during ordinary small talk.",
+          "Avoid politics unless the player pushes first."
+        ],
+        "triggers": {
+          "love": "Extreme loyalty, saving his life, or honoring his craft.",
+          "like": "Praising the quality of his work.",
+          "neutral": "Basic greetings, weather, or ordinary trade questions.",
+          "dislike": "Rudeness, mockery, or shallow criticism.",
+          "hate": "Threats, humiliation, or attacks on his honor."
+        },
+        "trust_logic": {
+          "love": 20,
+          "like": 10,
+          "neutral": 0,
+          "dislike": -10,
+          "hate": -25
+        },
+        "default_mood": "guarded",
+        "tags": [
+          "smith",
+          "elder",
+          "gruff"
+        ]
+      }
+    }
+  ]
+}

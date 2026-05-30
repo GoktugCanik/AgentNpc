@@ -1,0 +1,168 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agentnpc.local/schemas/npc_texts.schema.json",
+  "title": "AgentNpc NPC Texts Schema",
+  "description": "Defines authored selective-mode dialogue categories and reply pools for each NPC.",
+  "type": "object",
+  "minProperties": 1,
+  "propertyNames": {
+    "type": "string",
+    "minLength": 1
+  },
+  "additionalProperties": {
+    "$ref": "#/$defs/npcDialogueMap"
+  },
+  "$defs": {
+    "replyText": {
+      "type": "string",
+      "minLength": 1
+    },
+    "replyEntry": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/replyText"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "text"
+          ],
+          "properties": {
+            "text": {
+              "$ref": "#/$defs/replyText"
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Optional stable identifier for tools and analytics."
+            },
+            "tags": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "min_trust": {
+              "type": "integer",
+              "minimum": -100,
+              "maximum": 100
+            },
+            "max_trust": {
+              "type": "integer",
+              "minimum": -100,
+              "maximum": 100
+            },
+            "conditions": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "description": "Optional future-facing condition keys resolved by game code."
+            },
+            "weight": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "description": "Optional author hint for future weighted selection within a chosen category."
+            }
+          }
+        }
+      ]
+    },
+    "categoryArray": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/replyEntry"
+      }
+    },
+    "categoryObject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "replies"
+      ],
+      "properties": {
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Optional writer-facing explanation of what this category means."
+        },
+        "routing_hints": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": "Optional phrases or intents that help author tools and future routing helpers."
+        },
+        "replies": {
+          "$ref": "#/$defs/categoryArray"
+        }
+      }
+    },
+    "categoryDefinition": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/categoryArray"
+        },
+        {
+          "$ref": "#/$defs/categoryObject"
+        }
+      ]
+    },
+    "npcDialogueMap": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_]*$",
+        "description": "Category keys should be lowercase narrative intent labels such as greeting or critique."
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/categoryDefinition"
+      }
+    }
+  },
+  "examples": [
+    {
+      "Kaldar": {
+        "greeting": [
+          "Aye. What do you want? I'm busy.",
+          "Make it quick. The fire is waiting for no one."
+        ],
+        "critique": {
+          "description": "Responses used when the player insults Kaldar's work or judgment.",
+          "routing_hints": [
+            "your steel is bad",
+            "this forge is weak"
+          ],
+          "replies": [
+            {
+              "id": "critique_01",
+              "text": "My steel is legendary, you ignorant whelp!",
+              "tags": [
+                "angry",
+                "forge_pride"
+              ],
+              "min_trust": -100,
+              "max_trust": 100,
+              "weight": 1
+            },
+            {
+              "id": "critique_02",
+              "text": "If you doubt my work, test it in battle first.",
+              "tags": [
+                "challenging"
+              ],
+              "weight": 0.8
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "Kaldar": {
+    "appreciation": ["Thank you!", "I appreciate your support."],
+    "greeting": ["Aye. What do you want? I'm busy.", "Make it quick. The fire is waiting for no one.", "Another traveler. Hope you've got coin or metal."],
+    "critique": ["My steel is legendary, you ignorant whelp!", "If you can't see the quality in this blade, you're blind as a newborn."],
+    "politics": ["Keep your tongue still about the King. Taxes are a thief's game, but I ain't talkin' more."]
+  },
+  "Boy": {
+    "greeting": ["Hi! Do you want to play tag?", "I saw a big bird today! Did you see it?", "My tummy is rumbling, do you have any candy?"],
+    "adventure": ["Really? Wow! Tell me a story about a dragon!", "Is the forest scary? Are there monsters?"]
+  }
+}
